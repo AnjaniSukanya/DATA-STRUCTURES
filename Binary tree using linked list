@@ -1,0 +1,86 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct Node{
+        int key,value,data;
+        struct Node *rc,*lc;
+}Node;
+Node *root = NULL;
+Node *getNode(){
+        Node *new = (Node *)malloc(sizeof(Node));
+        printf("Enter data & key: ");
+        scanf("%d%d",&new->data,&new->key);
+        new->rc=NULL;
+        new->lc=NULL;
+        return new;
+}
+void insert_root(){
+        Node *new = getNode();
+        if(root==NULL)
+                root=new;
+}
+void insert_lc(Node *root){
+        Node *new = getNode();
+        if(root->lc==NULL)
+                root->lc=new;
+}
+void insert_rc(Node *root){
+         Node *new = getNode();
+         if(root->rc==NULL)
+                root->rc=new;
+}
+void preorder(Node *root){
+        if(root!=0){
+                printf("%d ",root->key);
+                preorder(root->lc);
+                preorder(root->rc);
+        }
+}
+void postorder(Node *root){
+        if(root!=0){
+                postorder(root->lc);
+                postorder(root->rc);
+                printf("%d ",root->key);
+        }
+}
+void inorder(Node *root){
+        if(root!=0){
+                inorder(root->lc);
+                printf("%d ",root->key);
+                inorder(root->rc);
+        }
+}
+void main(){
+        int n;
+        int ch,i;
+        int key;
+         printf("\n1.Preorder\n2.Postorder\n3.Inorder\n4.insert lc\n5.insert rc\n6.root\n7.Exit\n");
+        while(1)
+        {
+                printf("Enter your choice : ");
+                scanf("%d",&ch);
+                switch(ch)
+                {
+                        case 1: printf("Preorder :");
+                                preorder(root);
+                                break;
+                        case 2: printf("Postorder : ");
+                                postorder(root);
+                                break;
+                        case 3: printf("Inorder : ");
+                                inorder(root);
+                                break;
+                        case 6:insert_root(key);
+                               break;
+                        case 4:printf("enter the parent of child to insert: ");
+                               scanf("%d",&i);
+                               insert_lc(root);
+                               break;
+                        case 5:printf("enter the parent of child to insert: ");
+                               scanf("%d",&i);
+                               insert_rc(root);
+                               break;
+                        case 7: exit(0);
+                                break;
+                }
+        }
+}
