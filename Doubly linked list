@@ -1,0 +1,163 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct dNode{
+        int data;
+        struct dNode *next,*prev;
+}dNode;
+dNode *head = NULL;
+dNode *tail = NULL;
+dNode *temp = NULL;
+dNode *getNode();
+void fwd_traverse();
+void insert_beg();
+void insert_end();
+void insert_atk();
+int counting();
+void del_beg();
+void del_end();
+/*void del_atk();
+*/void main() {
+        int ch,k;
+        while(1) {
+                printf("\n1.Insert at the beginning\n2.Insert at the end\n3.Insert at kth position\n4.Traverse fwd\n5.Travrse rev\n6.counting");
+                printf("\n7.Deletion at the beginning\n8.Deletion at the end\n9.Deletion at kth position\n10.exit\n");
+                printf("Enter option : ");
+                scanf("%d",&ch);
+                switch(ch){
+                case 1 : printf("Inserting at the beginning \n");
+                         insert_beg();
+                         break;
+                case 2 : printf("Inserting at the end \n");
+                         insert_end();
+                         break;
+                case 3 : printf("Inserting at kth position\n");
+                         insert_atk();
+                         break;
+                case 4 : fwd_traverse();
+                         break;
+                case 5 : rev_traverse();
+                         break;
+                case 6 : printf("The length of the list is \n");
+                         printf("%d",counting());
+                         break;
+                case 7 : printf("Deletion at the beginning\n");
+                         del_beg();
+                         break;
+                case 8 : printf("Deletion at the end\n");
+                         del_end();
+                         break;
+/*                case 9 : printf("Deletion at kth position\n");
+                         del_atk();
+*/                case 10 : exit(0);
+
+                }
+        }
+}
+dNode *getNode() {
+        dNode *new = (dNode *)malloc(sizeof(dNode));
+        printf("Enter data: ");
+        scanf("%d",&new->data);
+        new->next=NULL;
+        return new;
+}
+void insert_beg() {
+        dNode *new=getNode();
+        if(head==NULL)
+                head = tail = new;
+        else{
+                new->next = head;
+                head->prev = new;
+                head = new;
+        }
+}
+void fwd_traverse(){
+        dNode *curr=head;
+        if(curr==NULL)
+                printf("List is empty");
+        else{
+                while(curr->next!=NULL) {
+                        printf("%d ",curr->data);
+                        curr=curr->next;
+                }
+                printf("%d",curr->data);
+        }
+}
+void insert_end() {
+        dNode *new=getNode();
+        if(head==NULL)
+                head = tail = new;
+        else{
+                tail->next=new;
+                new->prev=tail;
+                tail=new;
+        }
+}
+int counting(){
+        int count =1;
+        temp =head;
+        while(temp->next!=NULL) {
+                count++;
+                temp=temp->next;
+        }
+        return count;
+}
+void insert_atk(){
+        int k,i,n;
+        printf("Enter the position at which you want to insert: ");
+        scanf("%d",&k);
+        temp=head;
+        n = counting();
+        if(k==1){
+                insert_beg();
+        }
+        else if(k>n) {
+                insert_end();
+        }       
+        else if(1<k &&k<n){
+                dNode *new = getNode();
+                for(i=1;i<=k-2;i++)
+                        temp=temp->next;
+                temp->next->prev=new;
+                new->next=temp->next;
+                temp->next=new;
+                new->prev=temp;
+
+        }
+        else{
+                printf("Inavlid position\n");
+        }
+}
+void del_beg(){
+        dNode *ptr = head;
+        if(head==NULL)
+                printf("List is empty\n");
+        else if(head->next==NULL) {
+                head=tail=NULL;
+        }
+        else{
+                head->next->prev=NULL;
+                head=head->next;
+                }
+        free(ptr);
+}
+void del_end(){
+        dNode *ptr=tail;
+        if(head==NULL)
+                printf("List is empty\n");
+        else if(head->next==NULL){
+                head=tail=NULL;
+                free(ptr);
+        }
+        else{
+                tail = tail->prev;
+                ptr->prev->next=NULL;
+                free(ptr);
+        }
+}
+void rev_traverse() {
+        dNode *curr=tail;
+        while(curr!=head){
+                printf("%d ",curr->data);
+                curr=curr->prev;
+        }printf("%d",curr->data);
+}
