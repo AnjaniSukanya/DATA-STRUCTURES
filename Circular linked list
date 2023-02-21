@@ -1,0 +1,167 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct cNode{
+        int data;
+        struct cNode *next;
+}cNode;
+cNode *head = NULL;
+cNode *temp = NULL;
+cNode *getNode();
+void display();
+void insert_beg();
+void insert_end();
+void insert_atk();
+int counting();
+void del_beg();
+void del_end();
+void del_atk();
+void main() {
+        int ch,k;
+        while(1) {
+                printf("\n1.Insert at the beginning\n2.Insert at the end\n3.Insert at kth position\n4.Display\n5.counting");
+                printf("\n6.Deletion at the beginning\n7.Deletion at the end\n8.Deletion at kth position\n9.exit\n");
+                printf("Enter option : ");
+                scanf("%d",&ch);
+                switch(ch){
+                case 1 : printf("Inserting at the beginning \n");
+                         insert_beg();
+                         break;
+                case 2 : printf("Inserting at the end \n");
+                         insert_end();
+                         break;
+                case 3 : printf("Inserting at kth position\n");
+                         insert_atk();
+                         break;
+                case 4 : display();
+                break;
+                case 5 : printf("The length of the list is \n");
+                         printf("%d",counting());
+                         break;
+                case 6 : printf("Deletion at the beginning\n");
+                         del_beg();
+                         break;
+                case 7 : printf("Deletion at the end\n");
+                         del_end();
+                         break;
+                case 8 : printf("Deletion at kth position\n");
+                         del_atk();
+                case 9 : exit(0);
+                }
+        }
+}
+cNode *getNode() {
+        cNode *new = (cNode *)malloc(sizeof(cNode));
+        printf("Enter data: ");
+        scanf("%d",&new->data);
+        new->next=NULL;
+        return new;
+}
+void insert_beg(){
+        cNode *new = getNode();
+        if(head==NULL){
+                head=new;
+                head->next=head;
+                temp=new;
+        }
+else {
+                new->next=head;
+                temp->next=new;
+                head=new;
+        }
+}
+void display() {
+        cNode *cur;
+        cur=head;
+        if(cur==NULL)
+                printf("List is empty\n");
+        else{
+                while(cur->next!=head){
+                        printf("%d ",cur->data);
+                        cur=cur->next;
+                } printf("%d",cur->data);
+        }
+}
+void insert_end() {
+        cNode *new=getNode();
+        if(head==NULL){
+                head=new;
+                head->next=head;
+                temp=new;
+        }
+        else {
+                temp->next=new;
+                new->next=head;
+                temp=new;
+        }
+}
+void insert_atk() {
+        int k,n;
+        cNode *new=getNode();
+        printf("Enter the position at which you want to insert: ");
+        scanf("%d",&k);
+        temp=head;
+        n = counting();
+        if(n==1){
+                insert_beg();
+        }
+        else if(k>n) {
+                printf("Inavlid position");
+        }
+        else{
+                for(int i=0;i<k-1;i++){
+                        temp=temp->next;
+                        new->next=temp->next;
+                        temp->next=new;
+                }
+        }
+}
+void del_beg() {
+        cNode *ptr = head;
+        if(head->next==head) {
+                head=temp=NULL;
+        }
+        else{
+                temp->next=head->next;
+                head=head->next;
+        }
+        free(ptr);
+}
+void del_end() {
+        cNode *ptr = temp;
+        if(head->next==head) {
+                head=temp=NULL;
+        }
+        else{
+                cNode *temp1=head;
+                while(temp1->next!=temp) {
+                        temp1=temp1->next;
+                }
+                temp1->next=head;
+                temp=temp1;
+        }
+        free(ptr);
+}
+int counting() {
+        int count =1;
+        temp =head;
+        while(temp->next!=head) {
+                count++;
+                temp=temp->next;
+                 }
+        return count;
+}
+void del_atk() {
+        int k;
+        printf("Enter the position at which you want to delete : ");
+        scanf("%d",&k);
+        n = counting();
+        if(n==1){
+                del_beg();
+        }
+        else if(k>n){
+                printf("Inavlid position");
+        }
+        else if(k==n){
+                del_end();
+        else{
+        
