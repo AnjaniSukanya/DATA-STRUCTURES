@@ -1,0 +1,184 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct Node{
+        int data;
+        struct Node *next;
+}Node;
+Node *head = NULL;
+Node *temp = NULL;
+Node *getNode();
+void display();
+void insert_beg();
+void insert_end();
+void insert_atk(int);
+int counting();
+void del_beg();
+void del_end();
+void del_atk();
+void main() {
+        int ch,k;
+        while(1) {
+                printf("\n1.Insert at the beginning\n2.Insert at the end\n3.Insert at kth position\n4.Display\n5.counting");
+                printf("\n6.Deletion at the beginning\n7.Deletion at the end\n8.Deletion at kth position\n9.exit\n");
+                printf("Enter option : ");
+                scanf("%d",&ch);
+                switch(ch){
+                case 1 : printf("Inserting at the beginning \n");
+                         insert_beg();
+                         break;
+                case 2 : printf("Inserting at the end \n");
+                         insert_end();
+                         break;
+                case 3 : printf("Inserting at kth position\n");
+                         printf("Enter the position at which you want to insert: ");
+                         scanf("%d",&k);
+                         insert_atk(k);
+                         break;
+                case 4 : if(head== NULL){
+                              printf("The list is empty\n");
+                         }
+                         else{
+                                 printf("The list is\n");
+                                 display();
+                         }
+                         break;
+                case 5 : printf("The length of the list is \n");
+                         printf("%d",counting());
+                         break;
+                case 6 : printf("Deletion at the beginning\n");
+                         del_beg();
+                         break;
+                case 7 : printf("Deletion at the end\n");
+                         del_end();
+                         break;
+                case 8 : printf("Deletion at kth position\n");
+                         printf("Enter the position at which you want to delete : ");
+                         scanf("%d",&k);
+                         del_atk();
+                         break;
+                case 9 : exit(0);
+                }
+        }
+}
+void insert_beg(){
+        Node *new = getNode();
+        if(head==NULL)
+                temp =new;
+        new->next=head;
+        head=new;
+}
+Node *getNode() {
+        Node *new = (Node *)malloc(sizeof(Node));
+        printf("Enter data: ");
+        scanf("%d",&new->data);
+        new->next=NULL;
+        return new;
+}
+void insert_end() {
+        Node *new = getNode();
+        if(head==NULL) {
+                head=new;
+                temp=new;
+        }
+        else{
+                temp->next=new;
+                temp = new;
+        }
+}
+ void display(){
+        Node *cur;
+        cur=head;
+        while(cur!=NULL){
+                printf("%d ",cur->data);
+                cur=cur->next;
+        }
+}
+int counting() {
+        int count =1;
+        temp =head;
+        while(temp->next!=NULL) {
+                count++;
+                temp=temp->next;
+                 }
+        return count;
+}
+void insert_atk(int k){
+        int x;
+        x = counting();
+        if(x==1){
+            insert_beg();
+        }
+        else if(k>x) {
+            printf("Invalid position");
+        }
+        else{
+        Node *new = getNode();
+        temp=head;
+        for(int i=0;i<=k-1;i++){
+                temp=temp->next;
+        }
+        new->next=temp->next;
+        temp->next=new;
+        }
+}
+void del_beg() {
+        Node *temp1=head;
+        if(head==NULL)
+                printf("List is empty");
+        else if(head->next==NULL){
+                printf("\nData deleted %d",head->data);
+                head = NULL;
+                temp = NULL;
+                free(temp1);
+        }
+        else {
+                head = head->next;
+                free(temp1);
+        }
+}
+void del_end() {
+        Node *temp1=head;
+        Node *t;
+        if(head==NULL)
+                printf("List is empty");
+        else if(head->next==NULL) {
+                printf("Data deleted : %d",head->data);
+                head=NULL;
+                temp=NULL;
+                free(temp1);
+        }
+        else {
+                while(temp1->next!=temp) {
+                        temp1=temp1->next;
+                        t = temp1->next;
+                       } temp1->next = NULL;
+                        temp = temp1;
+                        free(t);
+        }
+}
+void del_atk(){
+        int i,k,x;
+        Node *curr=head;
+        Node *temp1;
+        x = counting();
+        if(k==1){
+                del_beg();
+        }
+        else if(k==x){
+                del_end();
+        }
+        else if(1<k && k<x){
+                for(i=0;i<=k-2;i++){
+                        curr = curr->next;
+                        temp1 = curr->next;
+                        curr->next=curr->next->next;
+                        free(temp1);
+                }
+        }
+        else
+            printf("Inavlid position\n");
+}
+                                                                                                                         
+                                 
+                                                                                                                          
+
