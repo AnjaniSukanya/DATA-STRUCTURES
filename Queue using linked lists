@@ -1,0 +1,98 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct Node{
+        int data;
+        struct Node *next;
+}Node;
+Node *front = NULL;
+Node *rear = NULL;
+Node *getNode();
+void Enqueue();
+void Dequeue();
+int is_empty();
+int length();
+void display();
+void main(){
+        int ch, k;
+        while(1){
+                printf("\n1.Insert\n2.Delete\n3.length\n4.display\n5.exit");
+                printf("\nEnter option : ");
+                scanf("%d",&ch);
+                switch(ch) {
+                        case 1 : Enqueue();
+                                 break;
+                        case 2 : Dequeue();
+                                 break;
+                        case 3 : if(is_empty()){
+                                    printf("Queue is empty");
+                                }
+                                else {
+                                        printf("The length of the list is %d",length());
+                                }
+                                 break;
+                        case 4 : display();
+                                 break;
+                        case 5 : exit(0);
+                                 break;
+                }
+        }
+}
+Node *getNode() {
+        Node *new = (Node *)malloc(sizeof(Node));
+        printf("Enter data: ");
+        scanf("%d",&new->data);
+        new->next=NULL;
+        return new;
+}
+int is_empty(){
+        if(front == NULL)
+                return 1;
+        else
+                return 0;
+}
+void Enqueue(){
+        Node *new = getNode();
+        if(is_empty)
+                front = rear = new;
+        else if(rear == front){
+                front -> next = new;
+                rear = new;
+        }
+        else {
+                rear->next = new;
+                rear=new;
+        }
+}
+void display(){
+        Node *t=front;
+        if(is_empty())
+                printf("Queue is empty");
+        else {
+                printf("The elements in the list are ");
+               // printf("%d ",front->data);
+                while(t->next!=NULL){
+                      printf("%d ",t->data);
+                        t = t->next;
+               }
+                printf("%d ",t->data);
+        }
+}
+void Dequeue(){
+        Node *t = front;
+        if(is_empty)
+                printf("Queue is empty");
+        else{
+                printf("Data deleted : %d",front->data);
+                front = front->next;
+                free(t);
+        }
+}
+int length() {
+        Node *t = front;
+        int count =0;
+        while(t->next!=NULL) {
+             t=t->next;
+             count++;
+        }
+        return count;
+}
