@@ -1,0 +1,119 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct Node{
+        int data;
+        struct Node *next;
+}Node;
+Node *head = NULL;
+Node *top = NULL;
+Node *getNode();
+void push();
+void pop();
+void peek();
+int is_empty();
+int length();
+void display();
+void main(){
+        int ch, k;
+        while(1){
+                printf("\n1.push\n2.pop\n3.peek\n4.length\n5.display\n6.exit");
+                printf("\nEnter option : ");
+                scanf("%d",&ch);
+                switch(ch) {
+                        case 1 : push();
+                                 break;
+                        case 2 : pop();
+                                 break;
+                        case 3 : peek();
+                                 break;
+                        case 4 : if(is_empty()){
+                                    printf("Stack is empty");
+                                }
+                            else {
+                                printf("The length of the list is %d",length());
+                                }
+                                 break;
+                        case 5 : display();
+                                 break;
+                        case 6 : exit(0);
+                                 break;
+                }
+      }
+}
+Node *getNode() {
+        Node *new = (Node *)malloc(sizeof(Node));
+        printf("Enter data: ");
+        scanf("%d",&new->data);
+        new->next=NULL;
+        return new;
+}
+void push() {
+        Node *new = getNode();
+        if(is_empty()) {
+                head=top=new;
+        }
+        else{
+                top->next=new;
+                top = new;
+        }
+}
+void display(){
+        Node *t=head;
+        if(is_empty()==1)
+                printf("Stack underflow");
+        else {
+                printf("The elements in the list are ");
+                while(t->next!=NULL ){
+                Node *t1=t;
+                printf("%d ",t->data);
+                t = t->next;
+                printf("->");
+                }
+                printf("%d",t->data);
+        }
+}
+void pop() {
+        Node *temp1=head;
+        Node *t;
+        if(is_empty())
+                printf("Stack underflow");
+        else if(head->next==NULL) {
+                printf("Data deleted : %d",top->data);
+                head=NULL;
+                top=NULL;
+                free(temp1);
+        }
+        else {
+                printf("Data deleted : %d",top->data);
+                while(temp1->next!=top) {
+                        temp1=temp1->next;
+                        //t = temp1->next;
+                       } temp1->next = NULL;
+                        top = temp1;
+                        temp1= temp1->next;
+                        free(temp1);
+        }
+}
+
+int length() {
+        int count =1;
+            top = head;
+            while(top->next!=NULL) {
+                    count++;
+                    top=top->next;
+                     }
+            return count;
+}
+int is_empty() {
+        if(head == NULL)
+                return 1;
+        else
+                return 0;
+}
+
+void peek(){
+        if(is_empty() == 1)
+                printf("Stack underflow");
+        else
+                printf("The peek element is %d",top->data);
+}
