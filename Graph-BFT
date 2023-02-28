@@ -1,0 +1,73 @@
+#include<stdio.h>
+#define max 4
+	int g[max][max];
+	int Q[max];
+	int v[max]={0};
+	int front = -1, rear = -1;
+	int s;
+	int isfull(){
+	    if( rear == max -1)
+	        return 1;
+	    else
+	        return 0;
+	}
+	int isempty(){
+	    if (front == -1 && rear == -1)
+	        return 1;
+	    else
+	        return 0;
+	}
+	void Enqueue(int n){
+	        if(isfull())
+	                printf("Queue is filled\n");
+	        else{
+	                Q[++rear] = n;
+	                if(front == -1)
+	                        front++;
+	        }
+	 
+	}
+	int dequeue(){
+	    if(isempty())
+	        printf("Queue is empty\n");
+	    else if( rear == front){
+	        int x = Q[rear];
+	        rear = front = -1;
+	        return x;
+	    }
+	    else{
+	        int x = Q[front];
+	        front++;
+	        return x;
+	    }
+	
+	}
+	void bfs(int g[][max],int s,int n){
+	        v[s]=1;
+	        printf("%d ",s);
+	        Enqueue(s);
+	        while(!isempty()){
+	                int u=dequeue();
+	                for(int j=1;j<=n;j++){
+	                        if(v[j]!=1&&g[u][j]==1){
+	                                printf("%d ",j);
+	                                Enqueue(j);
+	                                v[j]=1;
+	
+	                        }
+	                }
+	        }
+	}
+	void main(){
+	        int n;
+	        printf("Enter number of vertices : ");
+	        scanf("%d",&n);
+	        for(int i=1;i<=n;i++){
+	                for(int j=1;j<=n;j++){
+	                        printf("\nEnter edges (%d,%d) : ",i,j);
+	                        scanf("%d",&g[i][j]);
+	                }
+	        }
+	        bfs(g,1,n);
+	
+	}
